@@ -3,7 +3,6 @@ package com.codecool.cookta.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -14,8 +13,6 @@ public class RequestHandler {
 
     private final String apiUrl = "https://api.edamam.com/search?q=chicken&app_id=5b5897f7&app_key=9ac6d44f07118d8a2bead5a790b270d5&from=0&to=3&calories=591-722&health=alcohol-free";
 
-    @Autowired
-    private JsonMapper jsonMapper;
 
     public ArrayNode fetchData(String searchParams) {
         ObjectMapper mapper = new ObjectMapper();

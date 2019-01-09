@@ -24,6 +24,14 @@ public class Recipe {
         this.ingredientLines = ingredientLines;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public String getLabel() {
         return label;
     }
@@ -32,6 +40,21 @@ public class Recipe {
         this.label = label;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String[] getIngredientLines() {
+        return ingredientLines;
+    }
+
+    public void setIngredientLines(String[] ingredientLines) {
+        this.ingredientLines = ingredientLines;
+    }
 
     @Override
     public String toString() {

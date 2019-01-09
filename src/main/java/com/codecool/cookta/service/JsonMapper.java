@@ -30,23 +30,3 @@ public class JsonMapper {
         return null;
     }
 }
-
-
-//    ObjectMapper mapper = new ObjectMapper();
-//        try {
-//                JsonNode hits = mapper.readTree(new URL(apiUrl));
-//                ArrayNode recipes = (ArrayNode) hits.path("hits");
-//                for (JsonNode node : recipes) {
-//                JsonNode recipeNode = node.path("recipe");
-//                System.out.println(recipeNode);
-//                Recipe recipe = mapper.treeToValue(recipeNode, Recipe.class);
-//        recipeList.add(recipe);
-//        }
-//        System.out.println(recipeList.toString());
-//        return recipeList.toString();
-//
-//        } catch (IOException e) {
-//        e.printStackTrace();
-//        }
-//
-//        return recipeList.toString();
