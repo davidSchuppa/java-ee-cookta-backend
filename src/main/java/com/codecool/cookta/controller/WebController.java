@@ -23,6 +23,7 @@ public class WebController {
         this.jsonMapper = jsonMapper;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/")
     public List<Recipe> listRecipe() {
         return jsonMapper.mapFilteredJson(requestHandler.fetchData(""));
