@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RestController
 public class WebController {
 
@@ -23,7 +23,7 @@ public class WebController {
     }
 
     @GetMapping("/api")
-    public List<Recipe> listRecipe() {
+    public List<Recipe> listRecipe() {// name this tempApiTest!
         return jsonMapper.mapFilteredJson(requestHandler.fetchData("chicken", ""));
     }
 
@@ -31,15 +31,10 @@ public class WebController {
     @RequestMapping("/api/search/")
     public List<Recipe> searchByURL(HttpServletRequest request, @RequestParam String q) {
         String params = request.getQueryString();
+        System.out.println(params);
         int startOfParams = params.indexOf('&');
         String searchParams = params.substring(startOfParams);
         return jsonMapper.mapFilteredJson(requestHandler.fetchData(q, searchParams));
     }
 
-//    @PostMapping
-//    (path = "/api/search/", consumes = "application/json", produces = "application/json")
-//    public List<Recipe> search(@RequestBody String reqBody) {
-//        System.out.println(reqBody);
-//        return jsonMapper.mapFilteredJson(requestHandler.fetchData("?q=chicken&app_id=5b5897f7&app_key=9ac6d44f07118d8a2bead5a790b270d5&from=3&to=6&calories=591-722&health=alcohol-free"));
-//    }
 }
