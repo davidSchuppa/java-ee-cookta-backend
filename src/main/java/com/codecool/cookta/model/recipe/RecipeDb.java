@@ -1,11 +1,10 @@
 package com.codecool.cookta.model.recipe;
 
-import com.codecool.cookta.model.Favourite;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
 
 
 @Data
@@ -24,16 +23,16 @@ public class RecipeDb {
     private String url;
 
 
-    @Singular
+    /*@Singular
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
-    private Set<Favourite> favourites;
+    private Set<Favourite> favourites;*/
 
 
     @Singular
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
-    private Set<IngredientLines> ingredientLines;
+    private List<IngredientLines> ingredientLines;
 
 
     @Override
@@ -42,7 +41,7 @@ public class RecipeDb {
                 "image='" + image + '\'' +
                 ", label='" + label + '\'' +
                 ", url='" + url + '\'' +
-                ", ingredientLines=" + Arrays.toString(new Set[]{ingredientLines}) +
+                ", ingredientLines=" + Arrays.toString(new List[]{ingredientLines}) +
                 '}';
     }
 }

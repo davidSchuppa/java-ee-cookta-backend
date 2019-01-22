@@ -15,7 +15,6 @@ import javax.persistence.*;
 @Entity
 public class IngredientLines {
 
-
     @Id
     @GeneratedValue
     private Long id;
