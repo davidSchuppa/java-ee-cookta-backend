@@ -1,6 +1,8 @@
 package com.codecool.cookta.model;
 
 
+import com.codecool.cookta.model.intolerance.Diet;
+import com.codecool.cookta.model.intolerance.Health;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,4 +29,10 @@ public class CooktaUser {
     @OneToMany(mappedBy = "cooktaUser", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
     private Set<Favourite> favourites;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Diet diet;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Health health;
 }

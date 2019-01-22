@@ -3,11 +3,11 @@ package com.codecool.cookta;
 import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.Favourite;
 import com.codecool.cookta.model.dto.Recipe;
+import com.codecool.cookta.model.intolerance.Diet;
+import com.codecool.cookta.model.intolerance.Health;
 import com.codecool.cookta.model.recipe.IngredientLines;
 import com.codecool.cookta.model.recipe.RecipeDb;
-import com.codecool.cookta.repository.CooktaUserRepository;
-import com.codecool.cookta.repository.FavouriteRepository;
-import com.codecool.cookta.repository.RecipeRepository;
+import com.codecool.cookta.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +28,12 @@ public class CooktaApplication {
     @Autowired
     private FavouriteRepository favouriteRepository;
 
+    @Autowired
+    private HealthRepository healthRepository;
+
+    @Autowired
+    private DietRepository dietRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(CooktaApplication.class, args);
     }
@@ -35,6 +41,11 @@ public class CooktaApplication {
     @Bean
     public CommandLineRunner init(){
         return args -> {
+            Diet diet = Diet.builder()
+                    .build();
+
+            Health health = Health.builder()
+                    .build();
 
             IngredientLines first_ingerdient = IngredientLines.builder()
                     .ingredient("First ingerdient")
@@ -48,8 +59,9 @@ public class CooktaApplication {
                     .username("gabor")
                     .password("pasword")
                     .email("email@email.com")
+                    .diet(diet)
+                    .health(health)
                     .build();
-
 
             RecipeDb chicken = RecipeDb.builder()
                     .label("Csirke")
@@ -59,14 +71,24 @@ public class CooktaApplication {
                     .ingredientLine(second_ingerdient)
                     .build();
 
+            first_ingerdient.setRecipe(chicken);
+            second_ingerdient.setRecipe(chicken);
+
             Favourite gaborFav = Favourite.builder()
                     .cooktaUser(gabor)
                     .recipe(chicken)
                     .build();
 
-            favouriteRepository.save(gaborFav);
+            gaborFav.setCooktaUser(gabor);
+            gaborFav.setRecipe(chicken);
+            diet.setCooktaUser(gabor);
+            health.setCooktaUser(gabor);
+
             cooktaUserRepository.save(gabor);
+            healthRepository.save(health);
+            dietRepository.save(diet);
             recipeRepository.save(chicken);
+            favouriteRepository.save(gaborFav);
         };
     }
 }

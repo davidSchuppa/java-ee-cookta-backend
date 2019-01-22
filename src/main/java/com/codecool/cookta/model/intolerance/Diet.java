@@ -20,7 +20,7 @@ public class Diet {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
+    @OneToOne(mappedBy = "diet")
     private CooktaUser cooktaUser;
 
     @Column(columnDefinition="BOOLEAN DEFAULT false")
