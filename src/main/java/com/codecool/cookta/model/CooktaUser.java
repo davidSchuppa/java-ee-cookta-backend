@@ -3,9 +3,11 @@ package com.codecool.cookta.model;
 
 import com.codecool.cookta.model.intolerance.Diet;
 import com.codecool.cookta.model.intolerance.Health;
+import com.codecool.cookta.model.recipe.RecipeDb;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -26,11 +28,12 @@ public class CooktaUser {
     private String email;
 
     @Singular
-    @OneToMany(mappedBy = "cooktaUser", cascade = CascadeType.PERSIST)
-    @EqualsAndHashCode.Exclude
-    private Set<Favourite> favourites;
+    @ElementCollection
+    // unique name
+    private List<RecipeDb> favourites;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Diet diet;
 
     @OneToOne(cascade = CascadeType.PERSIST)
