@@ -1,6 +1,7 @@
 package com.codecool.cookta.model.intolerance;
 
 
+import com.codecool.cookta.model.CooktaUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +20,8 @@ public class Diet {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
-    private Long cooktaUserId;
+    @OneToOne
+    private CooktaUser cooktaUser;
 
     @Column(columnDefinition="BOOLEAN DEFAULT false")
     private boolean vegetarian;

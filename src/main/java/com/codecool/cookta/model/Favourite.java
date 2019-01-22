@@ -1,6 +1,7 @@
 package com.codecool.cookta.model;
 
 
+import com.codecool.cookta.model.recipe.RecipeDb;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +23,8 @@ public class Favourite {
     private Long id;
 
     @ManyToOne
-    private Long cooktaUserId;
+    private CooktaUser cooktaUser;
 
     @ManyToOne
-    private Long recipeId;
+    private RecipeDb recipe;
 }

@@ -23,6 +23,6 @@ public class IngredientLines {
     private String ingredient;
 
     @ManyToOne
-    private Long recipeId;
+    private RecipeDb recipe;
 
 }
