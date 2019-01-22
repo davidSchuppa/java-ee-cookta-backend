@@ -25,13 +25,13 @@ public class RecipeDb {
 
 
     @Singular
-    @OneToMany(mappedBy = "recipeId", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
     private Set<Favourite> favourites;
 
 
     @Singular
-    @OneToMany(mappedBy = "recipeId", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
     private Set<IngredientLines> ingredientLines;
 

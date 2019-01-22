@@ -24,7 +24,7 @@ public class CooktaUser {
     private String email;
 
     @Singular
-    @OneToMany(mappedBy = "cooktaUserId", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "cooktaUser", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
     private Set<Favourite> favourites;
 }

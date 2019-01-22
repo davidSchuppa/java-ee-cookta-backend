@@ -23,8 +23,8 @@ public class Favourite {
     private Long id;
 
     @ManyToOne
-    private CooktaUser cooktaUserId;
+    private CooktaUser cooktaUser;
 
     @ManyToOne
-    private RecipeDb recipeId;
+    private RecipeDb recipe;
 }

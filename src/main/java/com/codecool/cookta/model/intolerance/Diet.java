@@ -21,7 +21,7 @@ public class Diet {
     private Long id;
 
     @OneToOne
-    private CooktaUser cooktaUserId;
+    private CooktaUser cooktaUser;
 
     @Column(columnDefinition="BOOLEAN DEFAULT false")
     private boolean vegetarian;
