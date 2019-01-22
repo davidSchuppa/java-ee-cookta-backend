@@ -1,6 +1,6 @@
 package com.codecool.cookta.controller;
 
-import com.codecool.cookta.model.recipe.Recipe;
+import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.service.JsonMapper;
 import com.codecool.cookta.service.EdamamAPIService;
 import org.springframework.beans.factory.annotation.Autowired;

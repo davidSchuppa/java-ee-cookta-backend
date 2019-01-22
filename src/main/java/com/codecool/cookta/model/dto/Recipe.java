@@ -1,35 +1,25 @@
-package com.codecool.cookta.model.recipe;
+package com.codecool.cookta.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Arrays;
 
-
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Recipe {
 
     @Id
     @GeneratedValue
-    @OneToMany(mappedBy = "recipeId", cascade = CascadeType.PERSIST)
     private Long id;
 
     private String image;
     private String label;
     private String url;
 
-    @Transient
     private String[] ingredientLines;
 
     @JsonCreator
