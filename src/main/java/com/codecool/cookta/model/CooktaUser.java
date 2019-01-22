@@ -1,12 +1,10 @@
 package com.codecool.cookta.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +15,6 @@ public class CooktaUser {
 
     @Id
     @GeneratedValue
-    @OneToMany(mappedBy = "cooktaUserId", cascade = CascadeType.PERSIST)
     private Long id;
 
     private String username;
@@ -25,4 +22,9 @@ public class CooktaUser {
     private String password;
 
     private String email;
+
+    @Singular
+    @OneToMany(mappedBy = "cooktaUserId", cascade = CascadeType.PERSIST)
+    @EqualsAndHashCode.Exclude
+    private Set<Favourite> favourites;
 }

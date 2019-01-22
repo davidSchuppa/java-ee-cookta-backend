@@ -1,6 +1,7 @@
 package com.codecool.cookta;
 
 import com.codecool.cookta.model.dto.Recipe;
+import com.codecool.cookta.model.recipe.RecipeDb;
 import com.codecool.cookta.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -21,7 +22,7 @@ public class CooktaApplication {
     @Bean
     public CommandLineRunner init(){
         return args -> {
-            Recipe lel = Recipe.builder()
+            RecipeDb lel = RecipeDb.builder()
                     .label("LEL")
                     .build();
 

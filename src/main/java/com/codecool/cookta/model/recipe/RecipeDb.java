@@ -1,8 +1,6 @@
 package com.codecool.cookta.model.recipe;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.codecool.cookta.model.Favourite;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,8 +23,16 @@ public class RecipeDb {
     private String label;
     private String url;
 
+
     @Singular
     @OneToMany(mappedBy = "recipeId", cascade = CascadeType.PERSIST)
+    @EqualsAndHashCode.Exclude
+    private Set<Favourite> favourites;
+
+
+    @Singular
+    @OneToMany(mappedBy = "recipeId", cascade = CascadeType.PERSIST)
+    @EqualsAndHashCode.Exclude
     private Set<IngredientLines> ingredientLines;
 
 
