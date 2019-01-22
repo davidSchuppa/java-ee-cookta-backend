@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 
@@ -33,7 +34,7 @@ public class RecipeDb {
     @Singular
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
     @EqualsAndHashCode.Exclude
-    private Set<IngredientLines> ingredientLines;
+    private List<IngredientLines> ingredientLines;
 
 
     @Override
@@ -42,7 +43,7 @@ public class RecipeDb {
                 "image='" + image + '\'' +
                 ", label='" + label + '\'' +
                 ", url='" + url + '\'' +
-                ", ingredientLines=" + Arrays.toString(new Set[]{ingredientLines}) +
+                ", ingredientLines=" + Arrays.toString(new List[]{ingredientLines}) +
                 '}';
     }
 }
