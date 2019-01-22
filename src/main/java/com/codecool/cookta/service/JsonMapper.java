@@ -1,6 +1,6 @@
 package com.codecool.cookta.service;
 
-import com.codecool.cookta.model.Recipe;
+import com.codecool.cookta.model.recipe.Recipe;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
