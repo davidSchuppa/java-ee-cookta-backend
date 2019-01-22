@@ -2,12 +2,12 @@ package com.codecool.cookta.repository;
 
 import com.codecool.cookta.model.recipe.IngredientLines;
 import com.codecool.cookta.model.recipe.RecipeDb;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -19,11 +19,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class RecipeRepositoryTest {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Before
+    public void eraseDatabase() {
+        recipeRepository.deleteAll();
+    }
 
     @Test
     @Transactional
