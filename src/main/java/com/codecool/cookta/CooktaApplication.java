@@ -20,7 +20,7 @@ public class CooktaApplication {
 
     @Autowired
     private RecipeRepository recipeRepository;
-    
+
     @Autowired
     private CooktaUserRepository cooktaUserRepository;
 

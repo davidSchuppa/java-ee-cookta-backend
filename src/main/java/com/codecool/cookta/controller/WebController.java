@@ -32,9 +32,12 @@ public class WebController {
     public List<Recipe> searchByURL(HttpServletRequest request, @RequestParam String q) {
         try {
             String params = request.getQueryString();
+            String searchParams = "";
             System.out.println(params);
             int startOfParams = params.indexOf('&');
-            String searchParams = params.substring(startOfParams);
+            if (startOfParams != -1) {
+                searchParams = params.substring(startOfParams);
+            }
             return jsonMapper.mapFilteredJson(requestHandler.fetchData(q, searchParams));
         } catch (StringIndexOutOfBoundsException | NullPointerException e) {
             return null;
