@@ -4,7 +4,9 @@ import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.service.JsonMapper;
 import com.codecool.cookta.service.EdamamAPIService;
+import com.codecool.cookta.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +18,13 @@ public class WebController {
 
     private final EdamamAPIService requestHandler;
     private final JsonMapper jsonMapper;
+    private final RegisterUserService registerUserService;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper) {
+    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
+        this.registerUserService = registerUserService;
     }
 
     @GetMapping("/api")
@@ -45,13 +49,16 @@ public class WebController {
         }
     }
 
-    @RequestMapping(value = "/api/register", method = RequestMethod.POST)
-    public void createUserObject(@RequestBody CooktaUser cooktaUser) {
+    @RequestMapping(value = "/api/register", method = RequestMethod.POST, headers = "Accept=application/json")
+    public HttpStatus createUserObject(@RequestBody CooktaUser cooktaUser) {
         try {
             System.out.println(cooktaUser);
+            registerUserService.registerUser(cooktaUser);
+            return HttpStatus.OK;
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
 }
