@@ -18,7 +18,6 @@ public class LoginValidation {
         try {
             CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(data.get("username"));
             LoginData loginData = new LoginData(user.getId(), user.getUsername(), user.getDiet().getDietFields(), user.getHealth().getHealthFields());
-            System.out.println(Arrays.asList(user.getDiet().getDietFields()));
             if (user.getPassword().equals(data.get("password"))) {
                 return loginData;
             } else {

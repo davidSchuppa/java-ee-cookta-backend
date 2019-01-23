@@ -49,7 +49,7 @@ public class Diet {
 
         for(Field field : Diet.class.getDeclaredFields()){
             field.setAccessible(true);
-            if(!field.getName().equals("id") && !field.getName().equals("cooktaUser") && (Boolean) field.get(this)) {
+            if(!field.getName().equals("id") && !field.getName().equals("cooktaUser")) {
                 dietFields.put(field.getName(), (Boolean) field.get(this));
             }
         }
