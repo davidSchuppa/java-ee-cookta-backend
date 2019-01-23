@@ -1,17 +1,25 @@
-package com.codecool.cookta.model;
+package com.codecool.cookta.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.persistence.*;
 import java.util.Arrays;
 
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Recipe {
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     private String image;
     private String label;
     private String url;
+
     private String[] ingredientLines;
 
     @JsonCreator
@@ -24,37 +32,6 @@ public class Recipe {
         this.ingredientLines = ingredientLines;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String[] getIngredientLines() {
-        return ingredientLines;
-    }
-
-    public void setIngredientLines(String[] ingredientLines) {
-        this.ingredientLines = ingredientLines;
-    }
 
     @Override
     public String toString() {
