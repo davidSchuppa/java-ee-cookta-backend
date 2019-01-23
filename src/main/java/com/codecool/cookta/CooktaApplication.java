@@ -28,6 +28,7 @@ public class CooktaApplication {
         SpringApplication.run(CooktaApplication.class, args);
     }
 
+/*
     @Bean
     @Profile("production")
     public CommandLineRunner init(){
@@ -74,6 +75,7 @@ public class CooktaApplication {
             cooktaUserRepository.save(gabor);
         };
     }
+*/
 }
 
 
