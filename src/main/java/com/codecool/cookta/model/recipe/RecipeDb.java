@@ -19,20 +19,18 @@ public class RecipeDb {
     private Long id;
 
     private String image;
+
+    @Column(nullable = false)
     private String label;
+
+    @Column(nullable = false)
     private String url;
 
 
-    /*@Singular
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
-    @EqualsAndHashCode.Exclude
-    private Set<Favourite> favourites;*/
-
-
     @Singular
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.PERSIST)
-    @EqualsAndHashCode.Exclude
-    private List<IngredientLines> ingredientLines;
+    @ElementCollection
+    @Column(nullable = false)
+    private List<String> ingredientLines;
 
 
     @Override

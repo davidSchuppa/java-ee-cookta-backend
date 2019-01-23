@@ -3,7 +3,6 @@ package com.codecool.cookta;
 import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.intolerance.Diet;
 import com.codecool.cookta.model.intolerance.Health;
-import com.codecool.cookta.model.recipe.IngredientLines;
 import com.codecool.cookta.model.recipe.RecipeDb;
 import com.codecool.cookta.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,29 +38,18 @@ public class CooktaApplication {
             Health health = Health.builder()
                     .build();
 
-            IngredientLines first_ingerdient = IngredientLines.builder()
-                    .ingredient("First ingerdient")
-                    .build();
-
-            IngredientLines second_ingerdient = IngredientLines.builder()
-                    .ingredient("Second ingerdient")
-                    .build();
-
-
             RecipeDb chicken = RecipeDb.builder()
                     .label("Csirke")
                     .image("image")
                     .url("url.com")
-                    .ingredientLine(first_ingerdient)
-                    .ingredientLine(second_ingerdient)
+                    .ingredientLines(Arrays.asList("First ingredient", "Second ingredient"))
                     .build();
 
             RecipeDb beef = RecipeDb.builder()
                     .label("Beef")
                     .image("image")
                     .url("url.com")
-                    .ingredientLine(first_ingerdient)
-                    .ingredientLine(second_ingerdient)
+                    .ingredientLines(Arrays.asList("First ingredient", "Second ingredient", "Third ingredient"))
                     .build();
 
 
@@ -75,9 +63,6 @@ public class CooktaApplication {
                     .favourite(beef)
                     .build();
 
-
-            first_ingerdient.setRecipe(chicken);
-            second_ingerdient.setRecipe(chicken);
 
             diet.setCooktaUser(gabor);
             health.setCooktaUser(gabor);

@@ -1,6 +1,5 @@
 package com.codecool.cookta.repository;
 
-import com.codecool.cookta.model.recipe.IngredientLines;
 import com.codecool.cookta.model.recipe.RecipeDb;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,14 +31,11 @@ public class RecipeRepositoryTest {
     @Test
     @Transactional
     public void SaveRecipe() {
-        IngredientLines ingredientLine = IngredientLines.builder()
-                .ingredient("first ingredient line")
-                .build();
 
         RecipeDb recipe = RecipeDb.builder()
                 .image("image_path")
                 .label("chicken")
-                .ingredientLine(ingredientLine)
+                .ingredientLine("Ingredient")
                 .url("url_for_description")
                 .build();
 
@@ -54,13 +50,11 @@ public class RecipeRepositoryTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void cantSaveWithoutLabel() {
-        IngredientLines line = IngredientLines.builder()
-                .ingredient("first ingredient line")
-                .build();
+
 
         RecipeDb recipe = RecipeDb.builder()
                 .image("image_path")
-                .ingredientLine(line)
+                .ingredientLine("Ingredient")
                 .url("url_for_description")
                 .build();
 
@@ -79,13 +73,11 @@ public class RecipeRepositoryTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void cantSaveWithoutDescription() {
-        IngredientLines line = IngredientLines.builder()
-                .ingredient("first ingredient line")
-                .build();
+
 
         RecipeDb recipe = RecipeDb.builder()
                 .label("label")
-                .ingredientLine(line)
+                .ingredientLine("Ingredient")
                 .build();
 
         recipeRepository.save(recipe);
