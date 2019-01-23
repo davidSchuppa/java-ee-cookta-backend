@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -40,4 +43,16 @@ public class Diet {
 
     @Column(columnDefinition="BOOLEAN DEFAULT false")
     private boolean balanced;
+
+    public Map<String, Boolean> getDietFields() throws IllegalAccessException {
+        Map<String, Boolean> dietFields = new HashMap<>();
+
+        for(Field field : Diet.class.getDeclaredFields()){
+            field.setAccessible(true);
+            if(!field.getName().equals("id") && !field.getName().equals("cooktaUser") && (Boolean) field.get(this)) {
+                dietFields.put(field.getName(), (Boolean) field.get(this));
+            }
+        }
+        return dietFields;
+    }
 }

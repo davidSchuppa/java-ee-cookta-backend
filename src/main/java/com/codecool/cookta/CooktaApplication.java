@@ -58,7 +58,7 @@ public class CooktaApplication {
 
             CooktaUser gabor = CooktaUser.builder()
                     .username("gabor")
-                    .password("pasword")
+                    .password("lol")
                     .email("email@email.com")
                     .diet(diet)
                     .health(health)
