@@ -150,4 +150,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+
+# config file
+config/
+
 # End of https://www.gitignore.io/api/linux,macos,intellij
