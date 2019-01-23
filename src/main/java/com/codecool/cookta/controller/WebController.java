@@ -1,6 +1,8 @@
 package com.codecool.cookta.controller;
 
+import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
+import com.codecool.cookta.repository.CooktaUserRepository;
 import com.codecool.cookta.service.JsonMapper;
 import com.codecool.cookta.service.EdamamAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import java.util.List;
 @CrossOrigin
 @RestController
 public class WebController {
+
+    @Autowired
+    private CooktaUserRepository cooktaUserRepository;
 
     private final EdamamAPIService requestHandler;
     private final JsonMapper jsonMapper;
@@ -42,6 +47,14 @@ public class WebController {
         } catch (StringIndexOutOfBoundsException | NullPointerException e) {
             return null;
         }
+    }
+
+
+    @RequestMapping("/cookta/login/")
+    public CooktaUser loginUser(HttpServletRequest request, @RequestParam String data){
+        System.out.println(data);
+        System.out.println("ittvagyok");
+        return null;
     }
 
 }
