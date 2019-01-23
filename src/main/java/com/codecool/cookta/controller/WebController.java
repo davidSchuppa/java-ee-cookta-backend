@@ -7,6 +7,7 @@ import com.codecool.cookta.service.EdamamAPIService;
 import com.codecool.cookta.service.RegisterUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,15 +51,12 @@ public class WebController {
     }
 
     @RequestMapping(value = "/api/register", method = RequestMethod.POST, headers = "Accept=application/json")
-    public HttpStatus createUserObject(@RequestBody CooktaUser cooktaUser) {
-        try {
-            System.out.println(cooktaUser);
-            registerUserService.registerUser(cooktaUser);
-            return HttpStatus.OK;
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+    public ResponseEntity<?> createUserObject(@RequestBody CooktaUser cooktaUser) {
+        if (registerUserService.registerUser(cooktaUser)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return HttpStatus.BAD_REQUEST;
     }
 
 }
