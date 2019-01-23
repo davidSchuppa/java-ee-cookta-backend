@@ -14,16 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
-import java.util.Map;
 
 @SpringBootApplication
 public class CooktaApplication {
 
-    Map<String, String> env = System.getenv();
-
     @Autowired
     private RecipeRepository recipeRepository;
-    
+
     @Autowired
     private CooktaUserRepository cooktaUserRepository;
 
