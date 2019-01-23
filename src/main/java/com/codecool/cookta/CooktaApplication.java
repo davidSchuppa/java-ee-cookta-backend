@@ -33,9 +33,12 @@ public class CooktaApplication {
     public CommandLineRunner init(){
         return args -> {
             Diet diet = Diet.builder()
+                    .balanced(true)
+                    .lowCarb(true)
                     .build();
 
             Health health = Health.builder()
+                    .gluten(true)
                     .build();
 
             RecipeDb chicken = RecipeDb.builder()
