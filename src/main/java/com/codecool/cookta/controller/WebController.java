@@ -1,5 +1,6 @@
 package com.codecool.cookta.controller;
 
+import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.service.JsonMapper;
 import com.codecool.cookta.service.EdamamAPIService;
@@ -41,6 +42,15 @@ public class WebController {
             return jsonMapper.mapFilteredJson(requestHandler.fetchData(q, searchParams));
         } catch (StringIndexOutOfBoundsException | NullPointerException e) {
             return null;
+        }
+    }
+
+    @RequestMapping(value = "/api/register", method = RequestMethod.POST)
+    public void createUserObject(@RequestBody CooktaUser cooktaUser) {
+        try {
+            System.out.println(cooktaUser);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
