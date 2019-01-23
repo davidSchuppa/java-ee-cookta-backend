@@ -54,14 +54,8 @@ public class WebController {
 
     @RequestMapping(value = "/cookta/login", method = RequestMethod.POST, headers = "Accept=application/json")
     public LoginData loginUser(@RequestBody Map<String, String> data) {
-        Map<Integer, List<String>> response = new HashMap<>();
-
         try {
-            if(loginValidation.validation(data) != null){
-                return loginValidation.validation(data);
-            }else{
-                return null;
-            }
+            return loginValidation.validation(data);
         } catch (NullPointerException | IllegalAccessException e) {
             e.printStackTrace();
         }
