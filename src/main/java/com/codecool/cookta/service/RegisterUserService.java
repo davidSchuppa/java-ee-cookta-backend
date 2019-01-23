@@ -12,8 +12,15 @@ public class RegisterUserService {
     private CooktaUserRepository cooktaUserRepository;
 
 
-    public void registerUser(CooktaUser cooktaUser) {
-        cooktaUserRepository.save(cooktaUser);
+    public boolean registerUser(CooktaUser cooktaUser) {
+        if (!cooktaUserRepository.existsCooktaUserByUsername(cooktaUser.getUsername())
+                &&
+                !cooktaUserRepository.existsCooktaUserByEmail(cooktaUser.getEmail())) {
+            cooktaUserRepository.save(cooktaUser);
+            return true;
+        }
+        return false;
+
     }
 
 }
