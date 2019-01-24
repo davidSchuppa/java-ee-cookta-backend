@@ -75,9 +75,14 @@ public class WebController {
     }
 
     @RequestMapping(value = "/api/add-favourite", headers = "Accept=application/json")
-    public ResponseEntity<?> createFavouriteForUser(@RequestBody String name,
-                                                    @RequestBody RecipeDb recipe) {
-        userFavourite.addFavourite(name, recipe);
+    public ResponseEntity<?> createFavouriteForUser(@RequestBody Map<String, RecipeDb> data) {
+        String user = "";
+        RecipeDb recipe = null;
+        for (String key : data.keySet()) {
+            user = key;
+            recipe = data.get(key);
+        }
+        userFavourite.addFavourite(user, recipe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
