@@ -2,18 +2,17 @@ package com.codecool.cookta.controller;
 
 import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
-import com.codecool.cookta.service.JsonMapper;
-import com.codecool.cookta.service.EdamamAPIService;
-import com.codecool.cookta.service.RegisterUserService;
-import com.codecool.cookta.service.LoginData;
-import com.codecool.cookta.service.LoginValidation;
+import com.codecool.cookta.model.recipe.RecipeDb;
+import com.codecool.cookta.service.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,13 +24,15 @@ public class WebController {
     private final JsonMapper jsonMapper;
     private final RegisterUserService registerUserService;
     private final LoginValidation loginValidation;
+    private final UserFavourite userFavourite;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation) {
+    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
         this.registerUserService = registerUserService;
         this.loginValidation = loginValidation;
+        this.userFavourite = userFavourite;
     }
 
     @GetMapping("/api")
@@ -75,5 +76,29 @@ public class WebController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @RequestMapping(value = "/api/add-favourite", headers = "Accept=application/json")
+    public ResponseEntity<?> createFavouriteForUser(@RequestBody String data) {
+        ObjectMapper mapper = new ObjectMapper();
+        String user = null;
+        RecipeDb recipe = null;
+        try {
+            JsonNode dataTree = mapper.readTree(data);
+            user = mapper.treeToValue(dataTree.get("user"), String.class);
+            recipe = mapper.treeToValue(dataTree.path("recipe"), RecipeDb.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        userFavourite.addFavourite(user, recipe);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{username}/remove-favourite", headers = "Accept=application/json")
+    public ResponseEntity<?> deleteFavourite(@PathVariable("username") String name, @RequestBody RecipeDb recipe) {
+        userFavourite.removeFavourite(name, recipe);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
 }

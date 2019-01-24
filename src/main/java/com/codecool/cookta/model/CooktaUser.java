@@ -8,7 +8,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -41,4 +40,14 @@ public class CooktaUser {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     private Health health;
+
+    public void appendFavourite(RecipeDb recipe) {
+        if (!favourites.contains(recipe)) {
+            favourites.add(recipe);
+        }
+    }
+
+    public void removeFavourite(RecipeDb recipe) {
+        favourites.remove(recipe);
+    }
 }
