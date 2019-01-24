@@ -74,11 +74,19 @@ public class WebController {
         }
     }
 
-    @RequestMapping(value = "/{username}/add-favourite")
-    public ResponseEntity<?> createFavouriteForUser(@PathVariable("username") String name,
+    @RequestMapping(value = "/api/add-favourite", headers = "Accept=application/json")
+    public ResponseEntity<?> createFavouriteForUser(@RequestBody String name,
                                                     @RequestBody RecipeDb recipe) {
         userFavourite.addFavourite(name, recipe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{username}/remove-favourite", headers = "Accept=application/json")
+    public ResponseEntity<?> deleteFavourite(@PathVariable("username") String name, @RequestBody RecipeDb recipe) {
+        userFavourite.removeFavourite(name, recipe);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
 }
