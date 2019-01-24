@@ -47,4 +47,8 @@ public class CooktaUser {
             favourites.add(recipe);
         }
     }
+
+    public void removeFavourite(RecipeDb recipe) {
+        favourites.remove(recipe);
+    }
 }
