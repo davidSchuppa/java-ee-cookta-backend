@@ -41,6 +41,8 @@ public class CooktaApplication {
             Health health = Health.builder()
                     .gluten(true)
                     .fish(true)
+                    .shellfish(true)
+                    .treeNut(true)
                     .build();
 
             RecipeDb chicken = RecipeDb.builder()

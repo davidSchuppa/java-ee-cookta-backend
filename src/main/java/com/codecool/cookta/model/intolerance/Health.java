@@ -41,7 +41,7 @@ public class Health {
     private boolean dairy;
 
     @Column(columnDefinition="BOOLEAN DEFAULT false")
-    private boolean shellFish;
+    private boolean shellfish;
 
     @Column(columnDefinition="BOOLEAN DEFAULT false")
     private boolean egg;
