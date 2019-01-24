@@ -2,18 +2,14 @@ package com.codecool.cookta.controller;
 
 import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
-import com.codecool.cookta.service.JsonMapper;
-import com.codecool.cookta.service.EdamamAPIService;
-import com.codecool.cookta.service.RegisterUserService;
-import com.codecool.cookta.service.LoginData;
-import com.codecool.cookta.service.LoginValidation;
+import com.codecool.cookta.model.recipe.RecipeDb;
+import com.codecool.cookta.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,13 +21,15 @@ public class WebController {
     private final JsonMapper jsonMapper;
     private final RegisterUserService registerUserService;
     private final LoginValidation loginValidation;
+    private final UserFavourite userFavourite;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation) {
+    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
         this.registerUserService = registerUserService;
         this.loginValidation = loginValidation;
+        this.userFavourite = userFavourite;
     }
 
     @GetMapping("/api")
@@ -74,6 +72,13 @@ public class WebController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @RequestMapping(value = "/{username}/add-favourite")
+    public ResponseEntity<?> createFavouriteForUser(@PathVariable("username") String name,
+                                                    @RequestBody RecipeDb recipe) {
+        userFavourite.addFavourite(name, recipe);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
