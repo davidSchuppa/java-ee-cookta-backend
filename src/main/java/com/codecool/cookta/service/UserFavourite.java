@@ -21,9 +21,11 @@ public class UserFavourite {
         if (recipeRepository.existsRecipeDbByUrl(recipe.getUrl())) {
             recipe = recipeRepository.findRecipeDbByUrl(recipe.getUrl());
         } else {
+            cooktaUserByUsername.appendFavourite(recipe);
             recipeRepository.save(recipe);
+            cooktaUserRepository.save(cooktaUserByUsername);
         }
-        cooktaUserByUsername.appendFavourite(recipe);
+        System.out.println("recipe added");
     }
 
     public void removeFavourite(String name, RecipeDb recipe) {

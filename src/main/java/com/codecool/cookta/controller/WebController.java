@@ -4,12 +4,15 @@ import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.model.recipe.RecipeDb;
 import com.codecool.cookta.service.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -75,12 +78,16 @@ public class WebController {
     }
 
     @RequestMapping(value = "/api/add-favourite", headers = "Accept=application/json")
-    public ResponseEntity<?> createFavouriteForUser(@RequestBody Map<String, RecipeDb> data) {
-        String user = "";
+    public ResponseEntity<?> createFavouriteForUser(@RequestBody String data) {
+        ObjectMapper mapper = new ObjectMapper();
+        String user = null;
         RecipeDb recipe = null;
-        for (String key : data.keySet()) {
-            user = key;
-            recipe = data.get(key);
+        try {
+            JsonNode dataTree = mapper.readTree(data);
+            user = mapper.treeToValue(dataTree.get("user"), String.class);
+            recipe = mapper.treeToValue(dataTree.path("recipe"), RecipeDb.class);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         userFavourite.addFavourite(user, recipe);
         return new ResponseEntity<>(HttpStatus.OK);

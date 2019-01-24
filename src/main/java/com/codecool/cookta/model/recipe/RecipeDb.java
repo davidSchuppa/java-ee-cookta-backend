@@ -32,7 +32,6 @@ public class RecipeDb {
     @Column(nullable = false)
     private List<String> ingredientLines;
 
-
     @Override
     public String toString() {
         return "Recipe{" +
