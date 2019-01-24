@@ -20,11 +20,11 @@ public class UserFavourite {
         CooktaUser cooktaUserByUsername = cooktaUserRepository.findCooktaUserByUsername(username);
         if (recipeRepository.existsRecipeDbByUrl(recipe.getUrl())) {
             recipe = recipeRepository.findRecipeDbByUrl(recipe.getUrl());
-        } else {
-            cooktaUserByUsername.appendFavourite(recipe);
-            recipeRepository.save(recipe);
-            cooktaUserRepository.save(cooktaUserByUsername);
         }
+        cooktaUserByUsername.appendFavourite(recipe);
+        recipeRepository.save(recipe);
+        cooktaUserRepository.save(cooktaUserByUsername);
+
         System.out.println("recipe added");
     }
 

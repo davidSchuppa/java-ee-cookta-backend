@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,15 +29,17 @@ public class WebController {
     private final LoginValidation loginValidation;
     private final UserFavourite userFavourite;
     private final CooktaUserRepository cooktaUserRepository;
+    private final UserIntolerance userIntolerance;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite, CooktaUserRepository cooktaUserRepository) {
+    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite, CooktaUserRepository cooktaUserRepository, UserIntolerance userIntolerance) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
         this.registerUserService = registerUserService;
         this.loginValidation = loginValidation;
         this.userFavourite = userFavourite;
         this.cooktaUserRepository = cooktaUserRepository;
+        this.userIntolerance = userIntolerance;
     }
 
     @GetMapping("/api")
@@ -50,7 +53,7 @@ public class WebController {
         try {
             String params = request.getQueryString();
             String searchParams = "";
-//            System.out.println(params);
+            System.out.println(params);
             int startOfParams = params.indexOf('&');
             if (startOfParams != -1) {
                 searchParams = params.substring(startOfParams);
@@ -111,6 +114,14 @@ public class WebController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/intolerance/{username}", headers = "Accept=application/json")
+    public ResponseEntity<?> saveUserIntolerance(@PathVariable("username") String username, @RequestBody Map<String, Map<String, Boolean>> data) throws IllegalAccessException {
+        userIntolerance.updateIntolerance(username, data);
+        System.out.println(username);
+        System.out.println(Arrays.asList(data));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 }
