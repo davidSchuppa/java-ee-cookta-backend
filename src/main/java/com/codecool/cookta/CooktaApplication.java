@@ -40,6 +40,7 @@ public class CooktaApplication {
 
             Health health = Health.builder()
                     .gluten(true)
+                    .fish(true)
                     .build();
 
             RecipeDb chicken = RecipeDb.builder()
@@ -59,7 +60,7 @@ public class CooktaApplication {
 
             CooktaUser gabor = CooktaUser.builder()
                     .username("gabor")
-                    .password("pasword")
+                    .password("lol")
                     .email("email@email.com")
                     .diet(diet)
                     .health(health)
