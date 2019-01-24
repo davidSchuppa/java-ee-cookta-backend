@@ -19,7 +19,7 @@ public class UserFavourite {
     public void addFavourite(String username, RecipeDb recipe) {
         CooktaUser cooktaUserByUsername = cooktaUserRepository.findCooktaUserByUsername(username);
         if (recipeRepository.existsRecipeDbByUrl(recipe.getUrl())) {
-            RecipeDb newRecipe = recipeRepository.findRecipeDbByUrl(recipe.getUrl());
+            recipe = recipeRepository.findRecipeDbByUrl(recipe.getUrl());
         } else {
             recipeRepository.save(recipe);
         }
