@@ -28,6 +28,7 @@ public class CooktaApplication {
         SpringApplication.run(CooktaApplication.class, args);
     }
 
+/*
     @Bean
     @Profile("production")
     public CommandLineRunner init(){
@@ -39,6 +40,7 @@ public class CooktaApplication {
 
             Health health = Health.builder()
                     .gluten(true)
+                    .fish(true)
                     .build();
 
             RecipeDb chicken = RecipeDb.builder()
@@ -58,7 +60,7 @@ public class CooktaApplication {
 
             CooktaUser gabor = CooktaUser.builder()
                     .username("gabor")
-                    .password("pasword")
+                    .password("lol")
                     .email("email@email.com")
                     .diet(diet)
                     .health(health)
@@ -74,6 +76,7 @@ public class CooktaApplication {
             cooktaUserRepository.save(gabor);
         };
     }
+*/
 }
 
 
