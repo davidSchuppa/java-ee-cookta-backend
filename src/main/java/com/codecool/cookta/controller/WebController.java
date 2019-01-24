@@ -3,6 +3,7 @@ package com.codecool.cookta.controller;
 import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.model.recipe.RecipeDb;
+import com.codecool.cookta.repository.CooktaUserRepository;
 import com.codecool.cookta.service.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +27,16 @@ public class WebController {
     private final RegisterUserService registerUserService;
     private final LoginValidation loginValidation;
     private final UserFavourite userFavourite;
+    private final CooktaUserRepository cooktaUserRepository;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite) {
+    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite, CooktaUserRepository cooktaUserRepository) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
         this.registerUserService = registerUserService;
         this.loginValidation = loginValidation;
         this.userFavourite = userFavourite;
+        this.cooktaUserRepository = cooktaUserRepository;
     }
 
     @GetMapping("/api")
@@ -46,7 +50,7 @@ public class WebController {
         try {
             String params = request.getQueryString();
             String searchParams = "";
-            System.out.println(params);
+//            System.out.println(params);
             int startOfParams = params.indexOf('&');
             if (startOfParams != -1) {
                 searchParams = params.substring(startOfParams);
@@ -92,6 +96,14 @@ public class WebController {
         userFavourite.addFavourite(user, recipe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/favourites/{username}", method = RequestMethod.GET)
+    public List<RecipeDb> listUserFavourites(@PathVariable("username") String username) {
+        CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(username);
+        List<RecipeDb> userFavourites = new ArrayList<>(user.getFavourites());
+        return userFavourites;
+    }
+
 
     @RequestMapping(value = "/{username}/remove-favourite", headers = "Accept=application/json")
     public ResponseEntity<?> deleteFavourite(@PathVariable("username") String name, @RequestBody RecipeDb recipe) {
