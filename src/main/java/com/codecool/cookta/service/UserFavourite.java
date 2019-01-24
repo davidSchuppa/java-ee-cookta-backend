@@ -26,4 +26,12 @@ public class UserFavourite {
         cooktaUserByUsername.appendFavourite(recipe);
     }
 
+    public void removeFavourite(String name, RecipeDb recipe) {
+        CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(name);
+        if (recipeRepository.existsRecipeDbByUrl(recipe.getUrl())
+                && cooktaUserRepository.existsCooktaUserByUsername(name)) {
+            user.removeFavourite(recipe);
+        }
+    }
+
 }
