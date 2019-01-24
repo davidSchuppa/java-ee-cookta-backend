@@ -1,11 +1,15 @@
 package com.codecool.cookta.controller;
 
+import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.service.JsonMapper;
 import com.codecool.cookta.service.EdamamAPIService;
+import com.codecool.cookta.service.RegisterUserService;
 import com.codecool.cookta.service.LoginData;
 import com.codecool.cookta.service.LoginValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,13 +23,14 @@ public class WebController {
 
     private final EdamamAPIService requestHandler;
     private final JsonMapper jsonMapper;
+    private final RegisterUserService registerUserService;
     private final LoginValidation loginValidation;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, LoginValidation loginValidation) {
+    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
-
+        this.registerUserService = registerUserService;
         this.loginValidation = loginValidation;
     }
 
@@ -60,6 +65,15 @@ public class WebController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @RequestMapping(value = "/api/register", method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<?> createUserObject(@RequestBody CooktaUser cooktaUser) {
+        if (registerUserService.registerUser(cooktaUser)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
