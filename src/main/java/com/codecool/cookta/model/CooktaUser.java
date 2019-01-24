@@ -41,4 +41,10 @@ public class CooktaUser {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     private Health health;
+
+    public void appendFavourite(RecipeDb recipe) {
+        if (!favourites.contains(recipe)) {
+            favourites.add(recipe);
+        }
+    }
 }
