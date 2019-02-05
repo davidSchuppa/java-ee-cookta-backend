@@ -63,4 +63,16 @@ public class Health {
         }
         return dietFields;
     }
+
+    public void updateFields(Map<String, Boolean> userData) throws IllegalAccessException {
+
+        for(Field field : Health.class.getDeclaredFields()){
+            field.setAccessible(true);
+            for(String key : userData.keySet()){
+                if(field.getName().toLowerCase().equals(key)){
+                    field.set(this, userData.get(key));
+                }
+            }
+        }
+    }
 }
