@@ -4,6 +4,8 @@ import com.auth0.spring.security.api.JwtWebSecurityConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity(debug = false)
+@PropertySource(value = "auth0.properties")
 public class AppConfig extends WebSecurityConfigurerAdapter {
 
     @Value(value = "${auth0.apiAudience}")
@@ -41,9 +44,8 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         JwtWebSecurityConfigurer
                 .forRS256(apiAudience, issuer)
                 .configure(http)
-                .authorizeRequests();
-               // .antMatchers(HttpMethod.POST, "/list").authenticated()
-               // .antMatchers(HttpMethod.POST, "/addTodo").hasAuthority("admin:read");
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/list").authenticated();
 
     }
 
