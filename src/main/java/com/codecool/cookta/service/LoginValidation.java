@@ -19,16 +19,11 @@ public class LoginValidation {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public LoginData validation(Map<String, String> data) throws IllegalAccessException {
+        LoginData loginData;
         try {
             CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(data.get("username"));
-            LoginData loginData = new LoginData(user.getId(), user.getUsername(), user.getDiet().getDietFields(), user.getHealth().getHealthFields());
-            System.out.println(loginData.getUsername());
-            return loginData;
-            /*if (encoder.matches(data.get("password"), user.getPassword())) {
-                return loginData;
-            } else {
-                return null;
-            }*/
+            loginData = new LoginData(user.getId(), user.getUsername(), user.getDiet().getDietFields(), user.getHealth().getHealthFields());
+
         }catch (NullPointerException e){
             CooktaUser newUser = CooktaUser.builder()
                     .username(data.get("username"))
@@ -38,9 +33,9 @@ public class LoginValidation {
 
             cooktaUserRepository.save(newUser);
             CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(data.get("username"));
-            LoginData loginData = new LoginData(user.getId(), user.getUsername(), user.getDiet().getDietFields(), user.getHealth().getHealthFields());
-            return loginData;
+            loginData = new LoginData(user.getId(), user.getUsername(), user.getDiet().getDietFields(), user.getHealth().getHealthFields());
         }
+        return loginData;
 
     }
 }

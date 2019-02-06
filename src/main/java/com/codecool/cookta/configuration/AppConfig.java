@@ -47,7 +47,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/search/").permitAll()
                 .antMatchers(HttpMethod.POST, "/cookta/authentication").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/register").permitAll();
+                .antMatchers(HttpMethod.POST, "/api/add-favourite").authenticated()
+                .antMatchers(HttpMethod.GET, "/favourites/{username}").authenticated()
+                .antMatchers(HttpMethod.POST, "/intolerance/{username}").authenticated();
     }
 
 }

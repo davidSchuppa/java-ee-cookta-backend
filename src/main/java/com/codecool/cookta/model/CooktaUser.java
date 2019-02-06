@@ -23,17 +23,10 @@ public class CooktaUser {
     @Column(nullable = false, unique = true)
     private String username;
 
-    /*@Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false, unique = true)
-    private String email;*/
-
     @Singular
     @ElementCollection
     // unique name
     private List<RecipeDb> favourites;
-
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Diet diet;
