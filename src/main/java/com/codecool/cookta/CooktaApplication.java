@@ -4,17 +4,22 @@ import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.intolerance.Diet;
 import com.codecool.cookta.model.intolerance.Health;
 import com.codecool.cookta.model.recipe.RecipeDb;
+import com.codecool.cookta.property.FileStorageProperties;
 import com.codecool.cookta.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
 
 @SpringBootApplication
+@EnableConfigurationProperties({
+        FileStorageProperties.class
+})
 public class CooktaApplication {
 
     @Autowired
