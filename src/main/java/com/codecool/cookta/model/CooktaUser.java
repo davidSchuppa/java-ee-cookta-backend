@@ -23,11 +23,11 @@ public class CooktaUser {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    /*@Column(nullable = false)
     private String password;
 
     @Column(nullable = false, unique = true)
-    private String email;
+    private String email;*/
 
     @Singular
     @ElementCollection

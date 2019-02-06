@@ -34,7 +34,7 @@ public class CooktaApplication {
         SpringApplication.run(CooktaApplication.class, args);
     }
 
-    /*@Bean
+    @Bean
     @Profile("production")
     public CommandLineRunner init(){
         return args -> {
@@ -66,9 +66,7 @@ public class CooktaApplication {
 
 
             CooktaUser gabor = CooktaUser.builder()
-                    .username("gabor")
-                    .password("lol")
-                    .email("email@email.com")
+                    .username("gabor950601")
                     .diet(diet)
                     .health(health)
                     .favourite(chicken)
@@ -82,7 +80,7 @@ public class CooktaApplication {
             recipeRepository.saveAll(Arrays.asList(chicken,beef));
             cooktaUserRepository.save(gabor);
         };
-    }*/
+    }
 }
 
 

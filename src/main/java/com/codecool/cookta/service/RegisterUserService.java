@@ -17,7 +17,7 @@ public class RegisterUserService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    public boolean registerUser(CooktaUser cooktaUser) {
+   /* public boolean registerUser(CooktaUser cooktaUser) {
         if (!cooktaUserRepository.existsCooktaUserByUsername(cooktaUser.getUsername())
                 &&
                 !cooktaUserRepository.existsCooktaUserByEmail(cooktaUser.getEmail())) {
@@ -31,6 +31,6 @@ public class RegisterUserService {
         }
         return false;
 
-    }
+    }*/
 
 }

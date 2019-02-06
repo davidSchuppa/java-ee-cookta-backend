@@ -65,9 +65,10 @@ public class WebController {
     }
 
 
-    @RequestMapping(value = "/cookta/login", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/cookta/authentication", method = RequestMethod.POST)
     public LoginData loginUser(@RequestBody Map<String, String> data) {
         try {
+            System.out.println("LOL");
             return loginValidation.validation(data);
         } catch (NullPointerException | IllegalAccessException e) {
             e.printStackTrace();
@@ -75,14 +76,14 @@ public class WebController {
         return null;
     }
 
-    @RequestMapping(value = "/api/register", method = RequestMethod.POST, headers = "Accept=application/json")
+   /* @RequestMapping(value = "/api/register", method = RequestMethod.POST)
     public ResponseEntity<?> createUserObject(@RequestBody CooktaUser cooktaUser) {
         if (registerUserService.registerUser(cooktaUser)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @RequestMapping(value = "/api/add-favourite", headers = "Accept=application/json")
     public ResponseEntity<?> createFavouriteForUser(@RequestBody String data) {

@@ -31,7 +31,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT"));
         configuration.setAllowCredentials(true);
-        configuration.addAllowedHeader("Authorization");
+        configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -45,7 +45,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .configure(http)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/search/").permitAll();
+                .antMatchers(HttpMethod.GET, "/api/search/").permitAll()
+                .antMatchers(HttpMethod.POST, "/cookta/authentication").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/register").permitAll();
     }
 
 }
