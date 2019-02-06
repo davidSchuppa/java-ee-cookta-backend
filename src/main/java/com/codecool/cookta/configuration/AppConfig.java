@@ -18,7 +18,6 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity(debug = false)
-@PropertySource(value = "auth0.properties")
 public class AppConfig extends WebSecurityConfigurerAdapter {
 
     @Value(value = "${auth0.apiAudience}")
@@ -30,7 +29,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT"));
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("Authorization");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -45,8 +44,8 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .forRS256(apiAudience, issuer)
                 .configure(http)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/list").authenticated();
-
+                .antMatchers(HttpMethod.GET, "/api/").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/search/").authenticated();
     }
 
 }

@@ -11,10 +11,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 import java.util.Arrays;
 
 @SpringBootApplication
+@PropertySources({
+        @PropertySource("classpath:application.properties"),
+        @PropertySource("classpath:auth0.properties")
+})
 public class CooktaApplication {
 
     @Autowired

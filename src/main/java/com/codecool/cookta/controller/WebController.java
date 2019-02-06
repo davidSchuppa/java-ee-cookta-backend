@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class WebController {
 
@@ -42,7 +42,7 @@ public class WebController {
         this.userIntolerance = userIntolerance;
     }
 
-    @GetMapping("/api")
+    @RequestMapping(value = "/api", method = RequestMethod.GET)
     public List<Recipe> listRecipe() {// name this tempApiTest!
         return jsonMapper.mapFilteredJson(requestHandler.fetchData("chicken", ""));
     }
