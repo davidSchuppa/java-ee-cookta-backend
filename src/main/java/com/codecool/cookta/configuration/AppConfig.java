@@ -45,7 +45,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .configure(http)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/search/").authenticated();
+                .antMatchers(HttpMethod.GET, "/api/search/").permitAll();
     }
 
 }
