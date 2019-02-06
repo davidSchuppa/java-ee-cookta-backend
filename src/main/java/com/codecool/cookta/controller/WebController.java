@@ -42,8 +42,8 @@ public class WebController {
         this.userIntolerance = userIntolerance;
     }
 
-    @GetMapping("/api")
-    public List<Recipe> listRecipe() {// name this tempApiTest!
+    @RequestMapping("/api")
+    public List<Recipe> tempApiTest() {
         return jsonMapper.mapFilteredJson(requestHandler.fetchData("chicken", ""));
     }
 
@@ -65,7 +65,7 @@ public class WebController {
     }
 
 
-    @RequestMapping(value = "/cookta/login", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST, headers = "Accept=application/json")
     public LoginData loginUser(@RequestBody Map<String, String> data) {
         try {
             return loginValidation.validation(data);
@@ -100,7 +100,7 @@ public class WebController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/favourites/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/favourites/{username}", method = RequestMethod.GET)
     public List<RecipeDb> listUserFavourites(@PathVariable("username") String username) {
         CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(username);
         List<RecipeDb> userFavourites = new ArrayList<>(user.getFavourites());
@@ -108,14 +108,14 @@ public class WebController {
     }
 
 
-    @RequestMapping(value = "/{username}/remove-favourite", headers = "Accept=application/json")
+    @RequestMapping(value = "/api/remove-favourite/{username}", headers = "Accept=application/json")
     public ResponseEntity<?> deleteFavourite(@PathVariable("username") String name, @RequestBody RecipeDb recipe) {
         userFavourite.removeFavourite(name, recipe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/intolerance/{username}", headers = "Accept=application/json")
+    @RequestMapping(value = "/api/intolerance/{username}", headers = "Accept=application/json")
     public ResponseEntity<?> saveUserIntolerance(@PathVariable("username") String username, @RequestBody Map<String, Map<String, Boolean>> data) throws IllegalAccessException {
         userIntolerance.updateIntolerance(username, data);
         System.out.println(username);
