@@ -27,12 +27,10 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3000/", "http://localhost:3000/profile"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
-        //configuration.addAllowedHeader("Authorization");
-        //configuration.setAllowedHeaders(Arrays.asList("Authorization", "Accept", "Content-Type", "Credentials"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -45,15 +43,12 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .forRS256(apiAudience, issuer)
                 .configure(http)
                 .authorizeRequests()
-                //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/search/").permitAll()
                 .antMatchers(HttpMethod.POST, "/cookta/authentication").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/api/add-favourite").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/favourites/{username}").permitAll()
-                //.antMatchers(HttpMethod.GET, "/favourites/{username}").authenticated()
-                .antMatchers(HttpMethod.OPTIONS, "/intolerance/{username}").permitAll();
-                //.anyRequest().authenticated();
+                .antMatchers(HttpMethod.POST, "/api/add-favourite").authenticated()
+                .antMatchers(HttpMethod.GET, "/favourites/{username}").authenticated()
+                .antMatchers(HttpMethod.POST, "/intolerance/{username}").authenticated();
     }
 
 }
