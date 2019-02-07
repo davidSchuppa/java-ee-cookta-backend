@@ -3,7 +3,9 @@ package com.codecool.cookta.controller;
 import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.model.recipe.RecipeDb;
+import com.codecool.cookta.payload.UploadFileResponse;
 import com.codecool.cookta.repository.CooktaUserRepository;
+import com.codecool.cookta.repository.RecipeRepository;
 import com.codecool.cookta.service.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -32,9 +35,11 @@ public class WebController {
     private final UserFavourite userFavourite;
     private final CooktaUserRepository cooktaUserRepository;
     private final UserIntolerance userIntolerance;
+    private final FileStorageService fileStorageService;
+    private final RecipeRepository recipeRepository;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite, CooktaUserRepository cooktaUserRepository, UserIntolerance userIntolerance) {
+    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite, CooktaUserRepository cooktaUserRepository, UserIntolerance userIntolerance, FileStorageService fileStorageService, RecipeRepository recipeRepository) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
         this.registerUserService = registerUserService;
@@ -42,6 +47,8 @@ public class WebController {
         this.userFavourite = userFavourite;
         this.cooktaUserRepository = cooktaUserRepository;
         this.userIntolerance = userIntolerance;
+        this.fileStorageService = fileStorageService;
+        this.recipeRepository = recipeRepository;
     }
 
     @RequestMapping("/api")
@@ -124,6 +131,25 @@ public class WebController {
         log.debug(Arrays.asList(data).toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/api/upload-recipe/{username}")
+    public ResponseEntity<?> uploadRecipe(@PathVariable("username") String username,
+                                          @RequestParam("file") MultipartFile file,
+                                          @RequestParam("label") String label,
+                                          @RequestParam("ingredientLines") List<String> ingredients,
+                                          @RequestParam("healthLabels") Map<String, Boolean> healthLabel,
+                                          @RequestParam("dietLabels") Map<String, Boolean> dietLabel)
+    {
+        CooktaUser cooktaUser = cooktaUserRepository.findCooktaUserByUsername(username);
+        UploadFileResponse fileResponse = fileStorageService.uploadFile(file);
+        String image = fileResponse.getFileDownloadUri();
+        RecipeDb recipe = RecipeDb.builder().label(label).ingredientLines(ingredients).image(image).build();
+        recipeRepository.save(recipe);
+        Long id = recipeRepository.findIdByImage(image);
+        recipe.setUrl("http://localhost:8080/api/userRecipe/" + id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 
 

@@ -2,13 +2,16 @@ package com.codecool.cookta.service;
 
 import com.codecool.cookta.exception.FileStorageException;
 import com.codecool.cookta.exception.MyFileNotFoundException;
+import com.codecool.cookta.payload.UploadFileResponse;
 import com.codecool.cookta.property.FileStorageProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,9 +21,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Component
+@Slf4j
 public class FileStorageService {
 
     private final Path fileStorageLocation;
+
+    private static int imageId = 1;
 
     @Autowired
     public FileStorageService(FileStorageProperties fileStorageProperties) {
@@ -32,6 +38,20 @@ public class FileStorageService {
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
+    }
+
+    public UploadFileResponse uploadFile(MultipartFile file) {
+
+        String fileName = storeFile(file, imageId);
+        log.debug("The uploaded file is: " + fileName);
+        imageId++;
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+
+        return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());
     }
 
     public String storeFile(MultipartFile file, int imageId) {

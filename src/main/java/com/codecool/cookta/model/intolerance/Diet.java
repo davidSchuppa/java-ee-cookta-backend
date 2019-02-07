@@ -2,6 +2,7 @@ package com.codecool.cookta.model.intolerance;
 
 
 import com.codecool.cookta.model.CooktaUser;
+import com.codecool.cookta.model.recipe.RecipeDb;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,9 @@ public class Diet {
 
     @OneToOne(mappedBy = "diet")
     private CooktaUser cooktaUser;
+
+    @OneToOne(mappedBy = "recipeDiet")
+    private RecipeDb recipe;
 
     @Column(columnDefinition="BOOLEAN DEFAULT false")
     private boolean vegetarian;
