@@ -37,9 +37,10 @@ public class WebController {
     private final UserIntolerance userIntolerance;
     private final FileStorageService fileStorageService;
     private final RecipeRepository recipeRepository;
+    private final RecipeIntolerance recipeIntolerance;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite, CooktaUserRepository cooktaUserRepository, UserIntolerance userIntolerance, FileStorageService fileStorageService, RecipeRepository recipeRepository) {
+    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite, CooktaUserRepository cooktaUserRepository, UserIntolerance userIntolerance, FileStorageService fileStorageService, RecipeRepository recipeRepository, RecipeIntolerance recipeIntolerance) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
         this.registerUserService = registerUserService;
@@ -49,6 +50,7 @@ public class WebController {
         this.userIntolerance = userIntolerance;
         this.fileStorageService = fileStorageService;
         this.recipeRepository = recipeRepository;
+        this.recipeIntolerance = recipeIntolerance;
     }
 
     @RequestMapping("/api")
@@ -139,14 +141,18 @@ public class WebController {
                                           @RequestParam("ingredientLines") List<String> ingredients,
                                           @RequestParam("healthLabels") Map<String, Boolean> healthLabel,
                                           @RequestParam("dietLabels") Map<String, Boolean> dietLabel)
+            throws IllegalAccessException
     {
-        CooktaUser cooktaUser = cooktaUserRepository.findCooktaUserByUsername(username);
         UploadFileResponse fileResponse = fileStorageService.uploadFile(file);
         String image = fileResponse.getFileDownloadUri();
         RecipeDb recipe = RecipeDb.builder().label(label).ingredientLines(ingredients).image(image).build();
         recipeRepository.save(recipe);
         Long id = recipeRepository.findIdByImage(image);
-        recipe.setUrl("http://localhost:8080/api/userRecipe/" + id);
+        String url = "http://localhost:8080/api/userRecipe/" + id;
+        recipe.setUrl(url);
+        recipeRepository.save(recipe);
+        recipeIntolerance.updateRecipeIntolerance(url, healthLabel);
+        recipeIntolerance.updateRecipeIntolerance(url, dietLabel);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
