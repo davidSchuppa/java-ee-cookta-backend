@@ -1,5 +1,6 @@
 package com.codecool.cookta.service;
 
+import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.model.intolerance.Diet;
 import com.codecool.cookta.model.intolerance.Health;
 import com.codecool.cookta.model.recipe.RecipeDb;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+
 @Component
 public class RecipeIntolerance {
 
@@ -25,19 +27,19 @@ public class RecipeIntolerance {
     @Autowired
     UserIntolerance userIntolerance;
 
-    public void updateRecipeIntolerance(String url, Map<String, Boolean> data) throws IllegalAccessException {
-        RecipeDb recipe = recipeRepository.findRecipeDbByUrl(url);
-        if (data.containsKey("dietLabel")) {
-            Map<String, Boolean> diet = userIntolerance.refresKeySet(data);
-            Diet recipeDiet = dietRepository.findDietByRecipeId(recipe.getId());
-            recipeDiet.updateFields(diet);
-            dietRepository.save(recipeDiet);
-        } else {
-            Map<String, Boolean> health = userIntolerance.refresKeySet(data);
-            Health recipeHealth = healthRepository.findByRecipeId(recipe.getId());
-            recipeHealth.updateFields(health);
-            healthRepository.save(recipeHealth);
-        }
+    public void updateRecipeDietIntolerance(String label, Map<String, Boolean> diet) throws IllegalAccessException {
+        RecipeDb recipe = recipeRepository.findRecipeDbByLabel(label);
+        Map<String, Boolean> dietMap = userIntolerance.refresKeySet(diet);
+        Diet recipeDiet = dietRepository.findDietByRecipeId(recipe.getId());
+        recipeDiet.updateFields(dietMap);
+        dietRepository.save(recipeDiet);
     }
 
+    public void updateRecipeHealthIntolerance(String label, Map<String, Boolean> health) throws IllegalAccessException {
+        RecipeDb recipe = recipeRepository.findRecipeDbByLabel(label);
+        Map<String, Boolean> healthMap = userIntolerance.refresKeySet(health);
+        Health recipeHealth = healthRepository.findByRecipeId(recipe.getId());
+        recipeHealth.updateFields(healthMap);
+        healthRepository.save(recipeHealth);
+    }
 }
