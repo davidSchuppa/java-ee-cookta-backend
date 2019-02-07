@@ -2,8 +2,7 @@ package com.codecool.cookta.controller;
 
 import com.codecool.cookta.payload.UploadFileResponse;
 import com.codecool.cookta.service.FileStorageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -17,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
+@Slf4j
 public class FileController {
 
-    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
     private static int imageId = 1;
     private FileStorageService fileStorageService;
 
@@ -32,9 +31,8 @@ public class FileController {
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
 
         String fileName = fileStorageService.storeFile(file, imageId);
+        log.debug("The uploaded file is: " + fileName);
         imageId++;
-        System.out.println(fileName);
-
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)
@@ -47,12 +45,13 @@ public class FileController {
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);
+        log.debug("Requested " + resource + " file");
         // Try to determine file's content type
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            logger.info("Could not determine file type.");
+            log.info("Could not determine file type.");
         }
 
         // Fallback to the default content type if type could not be determined
