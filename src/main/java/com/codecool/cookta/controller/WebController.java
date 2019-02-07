@@ -7,15 +7,11 @@ import com.codecool.cookta.repository.CooktaUserRepository;
 import com.codecool.cookta.service.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -26,6 +22,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
+@Slf4j
 public class WebController {
 
     private final EdamamAPIService requestHandler;
@@ -58,7 +55,7 @@ public class WebController {
         try {
             String params = request.getQueryString();
             String searchParams = "";
-            System.out.println(params);
+            log.info("Search query string: " +params);
             int startOfParams = params.indexOf('&');
             if (startOfParams != -1) {
                 searchParams = params.substring(startOfParams);
@@ -123,8 +120,8 @@ public class WebController {
     @RequestMapping(value = "/api/intolerance/{username}", headers = "Accept=application/json")
     public ResponseEntity<?> saveUserIntolerance(@PathVariable("username") String username, @RequestBody Map<String, Map<String, Boolean>> data) throws IllegalAccessException {
         userIntolerance.updateIntolerance(username, data);
-        System.out.println(username);
-        System.out.println(Arrays.asList(data));
+        log.debug(username);
+        log.debug(Arrays.asList(data).toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
