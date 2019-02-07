@@ -40,19 +40,6 @@ public class FileStorageService {
         }
     }
 
-    public UploadFileResponse uploadFile(MultipartFile file) {
-
-        String fileName = storeFile(file, imageId);
-        log.debug("The uploaded file is: " + fileName);
-        imageId++;
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
-
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
-    }
 
     public String storeFile(MultipartFile file, int imageId) {
         // Normalize file name

@@ -45,8 +45,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .forRS256(apiAudience, issuer)
                 .configure(http)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/list").authenticated();
-
+                .anyRequest().permitAll();
     }
 
 }

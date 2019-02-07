@@ -64,7 +64,7 @@ public class WebController {
         try {
             String params = request.getQueryString();
             String searchParams = "";
-            log.info("Search query string: " +params);
+            log.info("Search query string: " + params);
             int startOfParams = params.indexOf('&');
             if (startOfParams != -1) {
                 searchParams = params.substring(startOfParams);
@@ -134,29 +134,21 @@ public class WebController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/upload-recipe/{username}")
-    public ResponseEntity<?> uploadRecipe(@PathVariable("username") String username,
-                                          @RequestParam("file") MultipartFile file,
-                                          @RequestParam("label") String label,
-                                          @RequestParam("ingredientLines") List<String> ingredients,
-                                          @RequestParam("healthLabels") Map<String, Boolean> healthLabel,
-                                          @RequestParam("dietLabels") Map<String, Boolean> dietLabel)
-            throws IllegalAccessException
-    {
-        UploadFileResponse fileResponse = fileStorageService.uploadFile(file);
-        String image = fileResponse.getFileDownloadUri();
-        RecipeDb recipe = RecipeDb.builder().label(label).ingredientLines(ingredients).image(image).build();
-        recipeRepository.save(recipe);
-        Long id = recipeRepository.findIdByImage(image);
-        String url = "http://localhost:8080/api/userRecipe/" + id;
-        recipe.setUrl(url);
-        recipeRepository.save(recipe);
-        recipeIntolerance.updateRecipeIntolerance(url, healthLabel);
-        recipeIntolerance.updateRecipeIntolerance(url, dietLabel);
+    @PostMapping(value = "/api/recipe", headers = "Accept=application/json")
+    public ResponseEntity<?> uploadRecipe(@RequestBody String data)
+            throws IllegalAccessException {
+        System.out.println(data);
+
+//        RecipeDb recipe = RecipeDb.builder().label(label).ingredientLine(ingredient).build();
+//        recipeRepository.save(recipe);
+//        String url = "http://localhost:8080/api/userRecipe/";
+//        System.out.println("itt mentettem el");
+//        recipe.setUrl(url);
+//        recipeRepository.save(recipe);
+//        recipeIntolerance.updateRecipeIntolerance(url, healthLabel);
+//        recipeIntolerance.updateRecipeIntolerance(url, dietLabel);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 
 
 }

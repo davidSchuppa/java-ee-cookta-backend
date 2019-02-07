@@ -25,7 +25,7 @@ public class RecipeDb {
     @Column(nullable = false)
     private String label;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String url;
 
 
