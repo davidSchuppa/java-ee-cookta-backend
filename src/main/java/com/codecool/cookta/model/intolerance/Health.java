@@ -61,7 +61,7 @@ public class Health {
 
         for(Field field : Health.class.getDeclaredFields()){
             field.setAccessible(true);
-            if(!field.getName().equals("id") && !field.getName().equals("cooktaUser")) {
+            if(!field.getName().equals("id") && !field.getName().equals("cooktaUser") && !field.getName().equals("recipe")) {
                 dietFields.put(field.getName(), (Boolean) field.get(this));
             }
         }
