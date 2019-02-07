@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ import java.io.IOException;
 public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-
+    private static int imageId = 1;
     private FileStorageService fileStorageService;
 
     @Autowired
@@ -29,7 +30,10 @@ public class FileController {
 
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = fileStorageService.storeFile(file);
+
+        String fileName = fileStorageService.storeFile(file, imageId);
+        imageId++;
+        System.out.println(fileName);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
@@ -39,11 +43,10 @@ public class FileController {
         return new UploadFileResponse(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize());
     }
-    @GetMapping("/downloadFile/{fileName:.+}")
+    @GetMapping(value = "/downloadFile/{fileName:.+}", produces = MediaType.ALL_VALUE)
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);
-
         // Try to determine file's content type
         String contentType = null;
         try {
@@ -58,8 +61,8 @@ public class FileController {
         }
 
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .contentType(MediaType.IMAGE_PNG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
 }

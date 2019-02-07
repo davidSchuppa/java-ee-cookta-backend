@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,9 +34,9 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file) {
+    public String storeFile(MultipartFile file, int imageId) {
         // Normalize file name
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String fileName = imageId + (StringUtils.cleanPath(file.getOriginalFilename()));
 
         try {
             // Check if the file's name contains invalid characters
