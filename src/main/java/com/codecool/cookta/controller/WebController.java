@@ -2,6 +2,8 @@ package com.codecool.cookta.controller;
 
 import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.dto.Recipe;
+import com.codecool.cookta.model.intolerance.Diet;
+import com.codecool.cookta.model.intolerance.Health;
 import com.codecool.cookta.model.recipe.RecipeDb;
 import com.codecool.cookta.payload.UploadFileResponse;
 import com.codecool.cookta.repository.CooktaUserRepository;
@@ -18,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -134,12 +133,47 @@ public class WebController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(value = "/api/recipe", headers = "Accept=application/json")
+    @PostMapping(value = "/api/recipe")
     public ResponseEntity<?> uploadRecipe(@RequestBody String data)
             throws IllegalAccessException {
-        System.out.println(data);
+        log.debug(data);
+        ObjectMapper mapper = new ObjectMapper();
+        RecipeDb recipe = null;
+        Map<String, Boolean> dietMap = new HashMap<>();
+        Map<String, Boolean> healthMap = new HashMap<>();
+        try {
+            JsonNode dataTree = mapper.readTree(data);
+            String label = mapper.treeToValue(dataTree.get("label"), String.class);
+            String ingredientLines = mapper.treeToValue(dataTree.get("ingredientLines"), String.class);
+            List<String> diet = mapper.treeToValue(dataTree.get("diet"), List.class);
+            List<String> health = mapper.treeToValue(dataTree.get("health"), List.class);
+            String fileName = mapper.treeToValue(dataTree.get("filename"), String.class);
 
-//        RecipeDb recipe = RecipeDb.builder().label(label).ingredientLine(ingredient).build();
+            for (String elem : diet) {
+                dietMap.put(elem, true);
+            }
+            for (String elem : health) {
+                healthMap.put(elem, true);
+            }
+
+            String image = "http://localhost:8080/downloadFile/" + fileName;
+            recipe = RecipeDb.builder().label(label).ingredientLine(ingredientLines).url(fileName).image(image).build();
+
+            Diet defaultDiet = Diet.builder().build();
+            Health defaultHealth = Health.builder().build();
+
+            recipe.setRecipeDiet(defaultDiet);
+            recipe.setRecipeHealth(defaultHealth);
+
+            recipeRepository.save(recipe);
+            recipeIntolerance.updateRecipeHealthIntolerance(label, healthMap);
+            recipeIntolerance.updateRecipeDietIntolerance(label, dietMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+//
 //        recipeRepository.save(recipe);
 //        String url = "http://localhost:8080/api/userRecipe/";
 //        System.out.println("itt mentettem el");
