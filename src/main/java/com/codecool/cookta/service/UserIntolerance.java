@@ -48,7 +48,7 @@ public class UserIntolerance {
 
     }
 
-    private Map<String, Boolean> refresKeySet(Map<String, Boolean> data){
+    public Map<String, Boolean> refresKeySet(Map<String, Boolean> data){
         Map<String, Boolean> newMap = new HashMap<>();
 
         for(String key : data.keySet()){
