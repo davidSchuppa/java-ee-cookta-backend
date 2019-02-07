@@ -17,8 +17,7 @@ import java.util.Arrays;
 
 
 @Configuration
-@EnableWebSecurity(debug = false)
-@PropertySource(value = "auth0.properties")
+@EnableWebSecurity(debug = true)
 public class AppConfig extends WebSecurityConfigurerAdapter {
 
     @Value(value = "${auth0.apiAudience}")
@@ -29,10 +28,10 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
         configuration.setAllowCredentials(true);
-        configuration.addAllowedHeader("Authorization");
+        configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -45,7 +44,12 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .forRS256(apiAudience, issuer)
                 .configure(http)
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .antMatchers(HttpMethod.GET, "/api/").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/search/").permitAll()
+                .antMatchers(HttpMethod.POST, "/cookta/authentication").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/add-favourite").authenticated()
+                .antMatchers(HttpMethod.GET, "/favourites/{username}").authenticated()
+                .antMatchers(HttpMethod.POST, "/intolerance/{username}").authenticated();
     }
 
 }

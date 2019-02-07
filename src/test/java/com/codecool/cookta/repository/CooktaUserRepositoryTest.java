@@ -34,8 +34,8 @@ public class CooktaUserRepositoryTest {
     public void saveCooktaUser() {
         CooktaUser user = CooktaUser.builder()
                 .username("admin")
-                .password("password")
-                .email("admin@admin.com")
+                //.password("password")
+                //.email("admin@admin.com")
                 .build();
 
         cooktaUserRepository.save(user);
@@ -50,9 +50,9 @@ public class CooktaUserRepositoryTest {
     @Test(expected = DataIntegrityViolationException.class)
     public void usernameCantBeNull() {
         CooktaUser user = CooktaUser.builder()
-                .password("password")
-                .email("admin@admin.com").
-                build();
+                //.password("password")
+                //.email("admin@admin.com").
+                .build();
 
         cooktaUserRepository.save(user);
     }
@@ -61,7 +61,7 @@ public class CooktaUserRepositoryTest {
     public void passwordCantBeNull() {
         CooktaUser user = CooktaUser.builder()
                 .username("admin")
-                .email("admin@admin.com")
+                //.email("admin@admin.com")
                 .build();
 
         cooktaUserRepository.save(user);
@@ -71,7 +71,7 @@ public class CooktaUserRepositoryTest {
     public void emailCantBeNull() {
         CooktaUser user = CooktaUser.builder()
                 .username("admin")
-                .password("password")
+                //.password("password")
                 .build();
 
         cooktaUserRepository.save(user);
@@ -81,14 +81,14 @@ public class CooktaUserRepositoryTest {
     public void cantSaveSameUsernames() {
         CooktaUser user = CooktaUser.builder()
                 .username("admin")
-                .password("password")
-                .email("admin@admin.com")
+                //.password("password")
+                //.email("admin@admin.com")
                 .build();
 
         CooktaUser user2 = CooktaUser.builder()
                 .username("admin")
-                .password("passwordcanbesame")
-                .email("admin2@admin.com")
+                //.password("passwordcanbesame")
+                //.email("admin2@admin.com")
                 .build();
 
         cooktaUserRepository.save(user);
@@ -99,14 +99,14 @@ public class CooktaUserRepositoryTest {
     public void cantSaveSameEmails() {
         CooktaUser user = CooktaUser.builder()
                 .username("admin")
-                .password("password")
-                .email("admin@admin.com")
+                //.password("password")
+                //.email("admin@admin.com")
                 .build();
 
         CooktaUser user2 = CooktaUser.builder()
                 .username("admin2")
-                .password("password")
-                .email("admin@admin.com")
+                //.password("password")
+                //.email("admin@admin.com")
                 .build();
 
         cooktaUserRepository.save(user);

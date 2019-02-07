@@ -75,7 +75,7 @@ public class WebController {
     }
 
 
-    @RequestMapping(value = "/api/login", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/cookta/authentication", method = RequestMethod.POST)
     public LoginData loginUser(@RequestBody Map<String, String> data) {
         try {
             return loginValidation.validation(data);
@@ -83,15 +83,6 @@ public class WebController {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @RequestMapping(value = "/api/register", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<?> createUserObject(@RequestBody CooktaUser cooktaUser) {
-        if (registerUserService.registerUser(cooktaUser)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @RequestMapping(value = "/api/add-favourite", headers = "Accept=application/json")
@@ -110,7 +101,7 @@ public class WebController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/favourites/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/favourites/{username}", method = {RequestMethod.GET, RequestMethod.OPTIONS})
     public List<RecipeDb> listUserFavourites(@PathVariable("username") String username) {
         CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(username);
         List<RecipeDb> userFavourites = new ArrayList<>(user.getFavourites());
@@ -118,7 +109,7 @@ public class WebController {
     }
 
 
-    @RequestMapping(value = "/api/remove-favourite/{username}", headers = "Accept=application/json")
+    @RequestMapping(value = "/{username}/remove-favourite", headers = "Accept=application/json")
     public ResponseEntity<?> deleteFavourite(@PathVariable("username") String name, @RequestBody RecipeDb recipe) {
         userFavourite.removeFavourite(name, recipe);
         return new ResponseEntity<>(HttpStatus.OK);

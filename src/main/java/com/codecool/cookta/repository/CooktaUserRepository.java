@@ -8,8 +8,6 @@ public interface CooktaUserRepository extends JpaRepository<CooktaUser ,Long> {
 
     boolean existsCooktaUserByUsername(String username);
 
-    boolean existsCooktaUserByEmail(String email);
-
     CooktaUser findCooktaUserByUsername(String username);
 
 
