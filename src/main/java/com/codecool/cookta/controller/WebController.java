@@ -91,7 +91,7 @@ public class WebController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/favourites/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/favourites/{username}", method = {RequestMethod.GET, RequestMethod.OPTIONS})
     public List<RecipeDb> listUserFavourites(@PathVariable("username") String username) {
         CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(username);
         List<RecipeDb> userFavourites = new ArrayList<>(user.getFavourites());
