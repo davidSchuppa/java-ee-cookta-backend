@@ -7,6 +7,8 @@ public interface RecipeRepository extends JpaRepository<RecipeDb, Long> {
 
     RecipeDb findRecipeDbByUrl(String url);
 
+    RecipeDb findRecipeDbByLabel(String label);
+
     boolean existsRecipeDbByUrl(String url);
 
     Long findIdByImage(String image);
