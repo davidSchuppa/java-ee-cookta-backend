@@ -9,4 +9,6 @@ public interface DietRepository extends JpaRepository<Diet, Long> {
 
     Diet findDietByCooktaUserId(Long id);
 
+    Diet findDietByRecipeId(Long id);
+
 }
