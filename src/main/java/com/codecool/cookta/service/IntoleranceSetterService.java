@@ -3,9 +3,11 @@ package com.codecool.cookta.service;
 import com.codecool.cookta.model.CooktaUser;
 import com.codecool.cookta.model.intolerance.Diet;
 import com.codecool.cookta.model.intolerance.Health;
+import com.codecool.cookta.model.recipe.RecipeDb;
 import com.codecool.cookta.repository.CooktaUserRepository;
 import com.codecool.cookta.repository.DietRepository;
 import com.codecool.cookta.repository.HealthRepository;
+import com.codecool.cookta.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,9 @@ import java.util.Map;
 public class IntoleranceSetterService {
 
     @Autowired
+    RecipeRepository recipeRepository;
+
+    @Autowired
     CooktaUserRepository cooktaUserRepository;
 
     @Autowired
@@ -26,7 +31,7 @@ public class IntoleranceSetterService {
     HealthRepository healthRepository;
 
 
-    public void updateIntolerance(String username, Map<String, Map<String, Boolean>> data) throws IllegalAccessException {
+    public void updateUserIntolerance(String username, Map<String, Map<String, Boolean>> data) throws IllegalAccessException {
         CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(username);
         Long id = user.getId();
         Map<String, Boolean> diet = data.get("diet");
@@ -46,6 +51,22 @@ public class IntoleranceSetterService {
         System.out.println(Arrays.asList(diet2));
         System.out.println(Arrays.asList(health2));
 
+    }
+
+    public void updateRecipeDietIntolerance(String label, Map<String, Boolean> diet) throws IllegalAccessException {
+        RecipeDb recipe = recipeRepository.findRecipeDbByLabel(label);
+        Map<String, Boolean> dietMap = refreshKeySet(diet);
+        Diet recipeDiet = dietRepository.findDietByRecipeId(recipe.getId());
+        recipeDiet.updateFields(dietMap);
+        dietRepository.save(recipeDiet);
+    }
+
+    public void updateRecipeHealthIntolerance(String label, Map<String, Boolean> health) throws IllegalAccessException {
+        RecipeDb recipe = recipeRepository.findRecipeDbByLabel(label);
+        Map<String, Boolean> healthMap = refreshKeySet(health);
+        Health recipeHealth = healthRepository.findByRecipeId(recipe.getId());
+        recipeHealth.updateFields(healthMap);
+        healthRepository.save(recipeHealth);
     }
 
     public Map<String, Boolean> refreshKeySet(Map<String, Boolean> data){
