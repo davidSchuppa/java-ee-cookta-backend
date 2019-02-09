@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class UserIntolerance {
+public class IntoleranceSetterService {
 
     @Autowired
     CooktaUserRepository cooktaUserRepository;
@@ -31,8 +31,8 @@ public class UserIntolerance {
         Long id = user.getId();
         Map<String, Boolean> diet = data.get("diet");
         Map<String, Boolean> health = data.get("health");
-        Map<String, Boolean> diet2 = refresKeySet(diet);
-        Map<String, Boolean> health2 = refresKeySet(health);
+        Map<String, Boolean> diet2 = refreshKeySet(diet);
+        Map<String, Boolean> health2 = refreshKeySet(health);
 
         Diet userDiet = dietRepository.findDietByCooktaUserId(id);
         Health userHealth = healthRepository.findByCooktaUserId(id);
@@ -48,7 +48,7 @@ public class UserIntolerance {
 
     }
 
-    public Map<String, Boolean> refresKeySet(Map<String, Boolean> data){
+    public Map<String, Boolean> refreshKeySet(Map<String, Boolean> data){
         Map<String, Boolean> newMap = new HashMap<>();
 
         for(String key : data.keySet()){
