@@ -1,4 +1,4 @@
-package com.codecool.cookta.service;
+package com.codecool.cookta.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
