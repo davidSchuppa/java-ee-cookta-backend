@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 public class WebController {
 
@@ -42,7 +42,7 @@ public class WebController {
         this.userIntolerance = userIntolerance;
     }
 
-    @GetMapping("/api")
+    @RequestMapping(value = "/api", method = RequestMethod.GET)
     public List<Recipe> listRecipe() {// name this tempApiTest!
         return jsonMapper.mapFilteredJson(requestHandler.fetchData("chicken", ""));
     }
@@ -65,7 +65,7 @@ public class WebController {
     }
 
 
-    @RequestMapping(value = "/cookta/login", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/cookta/authentication", method = RequestMethod.POST)
     public LoginData loginUser(@RequestBody Map<String, String> data) {
         try {
             return loginValidation.validation(data);
@@ -73,15 +73,6 @@ public class WebController {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @RequestMapping(value = "/api/register", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<?> createUserObject(@RequestBody CooktaUser cooktaUser) {
-        if (registerUserService.registerUser(cooktaUser)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @RequestMapping(value = "/api/add-favourite", headers = "Accept=application/json")
@@ -100,7 +91,7 @@ public class WebController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/favourites/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/favourites/{username}", method = {RequestMethod.GET, RequestMethod.OPTIONS})
     public List<RecipeDb> listUserFavourites(@PathVariable("username") String username) {
         CooktaUser user = cooktaUserRepository.findCooktaUserByUsername(username);
         List<RecipeDb> userFavourites = new ArrayList<>(user.getFavourites());

@@ -8,13 +8,19 @@ import com.codecool.cookta.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 
 import java.util.Arrays;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.codecool.cookta")
+@EnableAutoConfiguration
+@PropertySources({
+        @PropertySource("classpath:application.properties"),
+        @PropertySource("classpath:auth0.properties")
+})
 public class CooktaApplication {
 
     @Autowired
@@ -28,7 +34,7 @@ public class CooktaApplication {
         SpringApplication.run(CooktaApplication.class, args);
     }
 
-    /*@Bean
+    @Bean
     @Profile("production")
     public CommandLineRunner init(){
         return args -> {
@@ -60,9 +66,7 @@ public class CooktaApplication {
 
 
             CooktaUser gabor = CooktaUser.builder()
-                    .username("gabor")
-                    .password("lol")
-                    .email("email@email.com")
+                    .username("gabor950601")
                     .diet(diet)
                     .health(health)
                     .favourite(chicken)
@@ -76,7 +80,7 @@ public class CooktaApplication {
             recipeRepository.saveAll(Arrays.asList(chicken,beef));
             cooktaUserRepository.save(gabor);
         };
-    }*/
+    }
 }
 
 
