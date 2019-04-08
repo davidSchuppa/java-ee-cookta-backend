@@ -1,12 +1,15 @@
 package com.codecool.cookta.controller;
 
 import com.codecool.cookta.model.CooktaUser;
+import com.codecool.cookta.model.LoginData;
 import com.codecool.cookta.model.dto.Recipe;
 import com.codecool.cookta.model.recipe.RecipeDb;
 import com.codecool.cookta.repository.CooktaUserRepository;
+import com.codecool.cookta.repository.RecipeRepository;
 import com.codecool.cookta.service.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,36 +17,40 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-//@CrossOrigin
+@CrossOrigin
 @RestController
+@Slf4j
 public class WebController {
 
     private final EdamamAPIService requestHandler;
     private final JsonMapper jsonMapper;
-    private final RegisterUserService registerUserService;
     private final LoginValidation loginValidation;
     private final UserFavourite userFavourite;
     private final CooktaUserRepository cooktaUserRepository;
-    private final UserIntolerance userIntolerance;
+    private final IntoleranceSetterService intoleranceSetterService;
+    private final RecipeUploadService recipeUploadService;
 
     @Autowired
-    public WebController(EdamamAPIService requestHandler, JsonMapper jsonMapper, RegisterUserService registerUserService, LoginValidation loginValidation, UserFavourite userFavourite, CooktaUserRepository cooktaUserRepository, UserIntolerance userIntolerance) {
+    public WebController(EdamamAPIService requestHandler,
+                         JsonMapper jsonMapper,
+                         LoginValidation loginValidation,
+                         UserFavourite userFavourite,
+                         CooktaUserRepository cooktaUserRepository,
+                         IntoleranceSetterService intoleranceSetterService,
+                         RecipeUploadService recipeUploadService) {
         this.requestHandler = requestHandler;
         this.jsonMapper = jsonMapper;
-        this.registerUserService = registerUserService;
         this.loginValidation = loginValidation;
         this.userFavourite = userFavourite;
         this.cooktaUserRepository = cooktaUserRepository;
-        this.userIntolerance = userIntolerance;
+        this.intoleranceSetterService = intoleranceSetterService;
+        this.recipeUploadService = recipeUploadService;
     }
 
-    @RequestMapping(value = "/api", method = RequestMethod.GET)
-    public List<Recipe> listRecipe() {// name this tempApiTest!
+    @RequestMapping("/api")
+    public List<Recipe> tempApiTest() {
         return jsonMapper.mapFilteredJson(requestHandler.fetchData("chicken", ""));
     }
 
@@ -53,7 +60,7 @@ public class WebController {
         try {
             String params = request.getQueryString();
             String searchParams = "";
-            System.out.println(params);
+            log.info("Search query string: " + params);
             int startOfParams = params.indexOf('&');
             if (startOfParams != -1) {
                 searchParams = params.substring(startOfParams);
@@ -106,13 +113,17 @@ public class WebController {
     }
 
 
-    @RequestMapping(value = "/intolerance/{username}", headers = "Accept=application/json")
+    @RequestMapping(value = "/api/intolerance/{username}", headers = "Accept=application/json")
     public ResponseEntity<?> saveUserIntolerance(@PathVariable("username") String username, @RequestBody Map<String, Map<String, Boolean>> data) throws IllegalAccessException {
-        userIntolerance.updateIntolerance(username, data);
-        System.out.println(username);
-        System.out.println(Arrays.asList(data));
+        intoleranceSetterService.updateUserIntolerance(username, data);
+        log.debug(username);
+        log.debug(Arrays.asList(data).toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
+    @PostMapping(value = "/api/recipe")
+    public ResponseEntity<?> uploadRecipe(@RequestBody String data) throws IllegalAccessException {
+        recipeUploadService.uploadRecipe(data);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -1,5 +1,7 @@
 package com.codecool.cookta.model.recipe;
 
+import com.codecool.cookta.model.intolerance.Diet;
+import com.codecool.cookta.model.intolerance.Health;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +25,7 @@ public class RecipeDb {
     @Column(nullable = false)
     private String label;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String url;
 
 
@@ -31,6 +33,13 @@ public class RecipeDb {
     @ElementCollection
     @Column(nullable = false)
     private List<String> ingredientLines;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Diet recipeDiet;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Health recipeHealth;
+
 
     @Override
     public String toString() {

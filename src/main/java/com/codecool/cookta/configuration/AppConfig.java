@@ -27,7 +27,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
@@ -48,7 +48,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/cookta/authentication").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/add-favourite").authenticated()
                 .antMatchers(HttpMethod.GET, "/favourites/{username}").authenticated()
-                .antMatchers(HttpMethod.POST, "/intolerance/{username}").authenticated();
+                .antMatchers(HttpMethod.POST, "/intolerance/{username}").authenticated()
+                .antMatchers(HttpMethod.POST, "/uploadFile").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/recipe").permitAll();
     }
 
 }

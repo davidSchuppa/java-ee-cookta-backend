@@ -1,6 +1,7 @@
 package com.codecool.cookta.model.intolerance;
 
 import com.codecool.cookta.model.CooktaUser;
+import com.codecool.cookta.model.recipe.RecipeDb;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,9 @@ public class Health {
 
     @OneToOne(mappedBy = "health")
     private CooktaUser cooktaUser;
+
+    @OneToOne(mappedBy = "recipeHealth")
+    private RecipeDb recipe;
 
     @Column(columnDefinition="BOOLEAN DEFAULT false")
     private boolean gluten;
@@ -57,7 +61,7 @@ public class Health {
 
         for(Field field : Health.class.getDeclaredFields()){
             field.setAccessible(true);
-            if(!field.getName().equals("id") && !field.getName().equals("cooktaUser")) {
+            if(!field.getName().equals("id") && !field.getName().equals("cooktaUser") && !field.getName().equals("recipe")) {
                 dietFields.put(field.getName(), (Boolean) field.get(this));
             }
         }

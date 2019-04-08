@@ -1,25 +1,25 @@
 package com.codecool.cookta;
 
-import com.codecool.cookta.model.CooktaUser;
-import com.codecool.cookta.model.intolerance.Diet;
-import com.codecool.cookta.model.intolerance.Health;
-import com.codecool.cookta.model.recipe.RecipeDb;
-import com.codecool.cookta.repository.*;
+import com.codecool.cookta.property.FileStorageProperties;
+import com.codecool.cookta.repository.CooktaUserRepository;
+import com.codecool.cookta.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.*;
 
 import java.util.Arrays;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.codecool.cookta")
-@EnableAutoConfiguration
 @PropertySources({
         @PropertySource("classpath:application.properties"),
         @PropertySource("classpath:auth0.properties")
+})
+@EnableConfigurationProperties({
+        FileStorageProperties.class
 })
 public class CooktaApplication {
 
@@ -34,7 +34,7 @@ public class CooktaApplication {
         SpringApplication.run(CooktaApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     @Profile("production")
     public CommandLineRunner init(){
         return args -> {
@@ -66,7 +66,9 @@ public class CooktaApplication {
 
 
             CooktaUser gabor = CooktaUser.builder()
-                    .username("gabor950601")
+                    .username("gabor")
+                    .password("lol")
+                    .email("email@email.com")
                     .diet(diet)
                     .health(health)
                     .favourite(chicken)
@@ -80,7 +82,7 @@ public class CooktaApplication {
             recipeRepository.saveAll(Arrays.asList(chicken,beef));
             cooktaUserRepository.save(gabor);
         };
-    }
+    }*/
 }
 
 
